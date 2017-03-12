@@ -1,0 +1,19 @@
+{
+  "name": "chat_node",
+  "version": "1.0.0",
+  "description": "node.js + websocket example",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kimill1394/chat_node.git"
+  },
+  "author": "jina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kimill1394/chat_node/issues"
+  },
+  "homepage": "https://github.com/kimill1394/chat_node#readme"
+}
