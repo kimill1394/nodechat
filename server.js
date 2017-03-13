@@ -18,10 +18,23 @@ var io = require('socket.io').listen(server);
 // 입장한 유저 id를 주기 위한 변수
 var userIndex = 0;
 
+var userArr = Array();
 io.sockets.on('connection', function(socket){
+
   // 입장 시, 입장 이벤트 발생
-  socket.emit('entrance', {id:'user'+userIndex, nick: '(noname)', msg:'Welcome!'});
+  var userData = {id: 'user'+userIndex,
+                  nick: '(noname)'};
+  userArr.push(userData);
+
+  // socket.emit('entrance', {id:'user'+userIndex, nick: '(noname)', msg:'Welcome!'});
+  userData.msg = 'Welcome!';
+  socket.emit('entrance', userData, userArr);
+  // socket.broadcast.emit('guest', {id:'user'+userIndex, nick: '(noname)', msg:'(noname)님이 입장하셨습니다!'});
+  userData.msg = userData.id+'님이 입장하셨습니다!';
+  socket.broadcast.emit('guest', userData, userArr);
+
   userIndex++;
+
   // 클라이언트로부터 메세지 전달 요청을 받은 이벤트 처리
   socket.on('fromclient', function(data){
     console.log('entrance');

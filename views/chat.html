@@ -25,15 +25,16 @@
       <div id="user_box">
         <div id="user_list"></div>
       </div>
-      <div id="chat_box container center-block">
+      <div id="chat_box container">
         <div id="chat_log">
-          <div id="log_line">
-            <div id="nick"></div>
-            <div id="msgs"></div>
+          <div id="log_line" class="row">
+            <div class="nick col-xs-3"></div>
+            <div id="msgs" class="col-xs-9"></div>
           </div>
         </div>
-        <div id="chat_insert container navbar">
-          <input type="text" id="msgbox">
+        <div id="chat_insert" class="row">
+          <div class="nick col-xs-3"></div>
+          <input type="text" id="msgbox" class="col-xs-6">
           <input type="button" value="입력" onclick="fromclient()">
         </div>
       </div>
@@ -46,18 +47,37 @@
      var socket = io();
 
       // 입장시 id, nick 초기화하고 입장안내 띄우는 이벤트처리
-     socket.on('entrance', function(data){
+     socket.on('entrance', function(data, userArr){
        userid = data.id;
        usernick = data.nick;
        var user = userid +" ( "+usernick+" )";
-       $('#user_list').append(user+'<br>');
-       $('#nick').append('<br>');
+
+       var userList = "";
+       for(var i=0; i<userArr.length; i++) {
+         userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
+       }
+
+       $('#user_list').append(userList);
+       $('#chat_log .nick').append('<br>');
+       $('#chat_insert > .nick').append(userid);
        $('#msgs').append('<b>'+data.msg+'</b><br>');
      });
 
+    socket.on('guest', function(data, userArr){
+      var userList = "";
+      for(var i=0; i<userArr.length; i++) {
+        userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
+      }
+
+      $('#user_list').empty();
+      $('#user_list').append(userList);
+      $('#chat_log .nick').append('<br>');
+      $('#msgs').append('<b>'+data.msg+'</b><br>')
+    })
+
      // 메세지 보내는 이벤트 발생
      function fromclient() {
-       socket.emit('fromclient', {msg: $('#msgbox').val(), id: userid, nick: usernick});
+       socket.emit('fromclient', {msg: $('#msgbox').val(), id: userid, nick: userid});
        $('#msgbox').val('');
      }
 
@@ -73,14 +93,14 @@
       if (data.id == userid) {
         // 메세지를 보낸 사람이 나면
       //  $('#nick').append('나'+'<br>');
-       $('#nick').append('<div class="itsme nick">나</div>');
+       $('#chat_log .nick').append('<div class="itsme my_nick">나</div>');
       //  $('#msgs').append(data.msg+'<br>');
-       $('#msgs').append('<div class="itsme chat">'+data.msg+'</div>');
+       $('#msgs').append('<div class="itsme my_chat">'+data.msg+'</div>');
      } else { // 다른 유저면
       //  $('#nick').append(data.nick+'<br>');
-       $('#nick').append('<div class="others nick">'+data.nick+'</div>');
+       $('#chat_log .nick').append('<div class="others others_nick">'+data.id+'</div>');
       //  $('#msgs').append(data.msg+'<br>');
-       $('#msgs').append('<div class="others chat">'+data.msg+'</div>');
+       $('#msgs').append('<div class="others others_chat">'+data.msg+'</div>');
       }
      });
 
