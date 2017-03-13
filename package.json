@@ -1,5 +1,5 @@
 {
-  "name": "chat_node",
+  "name": "chat",
   "version": "1.0.0",
   "description": "node.js + websocket example",
   "main": "index.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kimill1394/chat_node.git"
+    "url": "git+https://github.com/kimill1394/chatnode.git"
   },
   "author": "jina",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kimill1394/chat_node/issues"
+    "url": "https://github.com/kimill1394/chatnode/issues"
   },
-  "homepage": "https://github.com/kimill1394/chat_node#readme"
+  "homepage": "https://github.com/kimill1394/chatnode#readme"
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <style>
+      .itsme {
+        color: gray;
+      }
+
+      .others {
+        background-color: skyblue;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+
+    <b>Chat room</b> <br>
+
+    <div id="chat_form container">
+      <div id="user_box">
+        <div id="user_list"></div>
+      </div>
+      <div id="chat_box container center-block">
+        <div id="chat_log">
+          <div id="log_line">
+            <div id="nick"></div>
+            <div id="msgs"></div>
+          </div>
+        </div>
+        <div id="chat_insert container navbar">
+          <input type="text" id="msgbox">
+          <input type="button" value="입력" onclick="fromclient()">
+        </div>
+      </div>
+    </div>
+
+    <script>
+     var userid = "";
+     var usernick = "";
+
+     var socket = io();
+
+      // 입장시 id, nick 초기화하고 입장안내 띄우는 이벤트처리
+     socket.on('entrance', function(data){
+       userid = data.id;
+       usernick = data.nick;
+       var user = userid +" ( "+usernick+" )";
+       $('#user_list').append(user+'<br>');
+       $('#nick').append('<br>');
+       $('#msgs').append('<b>'+data.msg+'</b><br>');
+     });
+
+     // 메세지 보내는 이벤트 발생
+     function fromclient() {
+       socket.emit('fromclient', {msg: $('#msgbox').val(), id: userid, nick: usernick});
+       $('#msgbox').val('');
+     }
+
+    // keyup 이벤트 중 엔터 치면 메세지 보내는 함수 실행
+     $('#msgbox').keyup(function(event) {
+       if(event.which==13) {
+         fromclient();
+       }
+     });
+
+    // 메세지 받는 이벤트 처리
+     socket.on('toclient', function(data) {
+      if (data.id == userid) {
+        // 메세지를 보낸 사람이 나면
+      //  $('#nick').append('나'+'<br>');
+       $('#nick').append('<div class="itsme nick">나</div>');
+      //  $('#msgs').append(data.msg+'<br>');
+       $('#msgs').append('<div class="itsme chat">'+data.msg+'</div>');
+     } else { // 다른 유저면
+      //  $('#nick').append(data.nick+'<br>');
+       $('#nick').append('<div class="others nick">'+data.nick+'</div>');
+      //  $('#msgs').append(data.msg+'<br>');
+       $('#msgs').append('<div class="others chat">'+data.msg+'</div>');
+      }
+     });
+
+    </script>
+  </body>
+</html>
