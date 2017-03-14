@@ -53,21 +53,35 @@
        var user = userid +" ( "+usernick+" )";
 
        var userList = "";
-       for(var i=0; i<userArr.length; i++) {
-         userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
-       }
+      //  for(var i=0; i<userArr.length; i++) {
+      //    userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
+      //  }
+      for(var id in userArr) {
+        userList += userArr[id].id+" ( "+userArr[id].nick+" ) <br>";
+      }
+      // userArr.forEach(function (userdata) {
+      //   userList += userdata.id+" ( "+userdata.nick+" ) <br>";
+      // })
 
        $('#user_list').append(userList);
        $('#chat_log .nick').append('<br>');
+       $('#chat_insert > .nick').empty();
        $('#chat_insert > .nick').append(userid);
        $('#msgs').append('<b>'+data.msg+'</b><br>');
      });
 
     socket.on('guest', function(data, userArr){
       var userList = "";
-      for(var i=0; i<userArr.length; i++) {
-        userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
+      // for(var i=0; i<userArr.length; i++) {
+      //   userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
+      // }
+      for(var id in userArr) {
+        // console.log(userdata);
+        userList += userArr[id].id+" ( "+userArr[id].nick+" ) <br>";
       }
+      // userArr.forEach(function (userdata) {
+      //   userList += userdata.id+" ( "+userdata.nick+" ) <br>";
+      // })
 
       $('#user_list').empty();
       $('#user_list').append(userList);
