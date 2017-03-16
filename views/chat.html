@@ -53,17 +53,7 @@
        var user = userid +" ( "+usernick+" )";
 
        var userList = "";
-      //  for(var i=0; i<userArr.length; i++) {
-      //    userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
-      //  }
-      for(var id in userArr) {
-        userList += userArr[id].id+" ( "+userArr[id].nick+" ) <br>";
-      }
-      // userArr.forEach(function (userdata) {
-      //   userList += userdata.id+" ( "+userdata.nick+" ) <br>";
-      // })
-
-       $('#user_list').append(userList);
+      renderUserList(userArr);
        $('#chat_log .nick').append('<br>');
        $('#chat_insert > .nick').empty();
        $('#chat_insert > .nick').append(userid);
@@ -75,16 +65,7 @@
       // for(var i=0; i<userArr.length; i++) {
       //   userList += userArr[i].id +" ( "+userArr[i].nick+" )<br>";
       // }
-      for(var id in userArr) {
-        // console.log(userdata);
-        userList += userArr[id].id+" ( "+userArr[id].nick+" ) <br>";
-      }
-      // userArr.forEach(function (userdata) {
-      //   userList += userdata.id+" ( "+userdata.nick+" ) <br>";
-      // })
-
-      $('#user_list').empty();
-      $('#user_list').append(userList);
+      renderUserList(userArr);
       $('#chat_log .nick').append('<br>');
       $('#msgs').append('<b>'+data.msg+'</b><br>')
     })
@@ -117,6 +98,25 @@
        $('#msgs').append('<div class="others others_chat">'+data.msg+'</div>');
       }
      });
+
+     socket.on('exitguest', function(userArr, msg) {
+       $('#chat_log .nick').append('<br>');
+       $('#msgs').append('<b>'+msg+'</b><br>');
+       renderUserList(userArr);
+     })
+
+     socket.on('areyouhere', function() {
+       socket.emit('imhere', userid, usernick);
+     })
+
+     function renderUserList (userArr) {
+       for(var id in userArr) {
+         userList += userArr[id].id+" ( "+userArr[id].nick+" ) <br>";
+       }
+
+       $('#user_list').empty();
+       $('#user_list').append(userList);
+     }
 
     </script>
   </body>

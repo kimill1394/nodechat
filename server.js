@@ -44,15 +44,16 @@ io.sockets.on('connection', function(socket){
   });
 
   // 클라이언트가 연결을 끊었을 때
-  socket.on('disconnect', function(id) {
-    socket.broadcast.emit('aryouhere');
-    socket.emit('areyouhere');
-    socket.on('imhere', function(id){
-
-    });
-
-    delete userArr[id];
-    userData.msg = id+'님이 퇴장하셨습니다TT';
-    socket.broadcast.emit('exitguest', userArr, userData.msg);
-  });
+  // socket.on('disconnect', function(id) {
+  //   var newUserList = {};
+  //   socket.broadcast.emit('aryouhere');
+  //   socket.emit('areyouhere');
+  //   socket.on('imhere', function(id, nick){
+  //     newUserList[id] = {id: id, nick: nick};
+  //   });
+  //   if(newUserList
+  //   delete userArr[id];
+  //   userData.msg = id+'님이 퇴장하셨습니다TT';
+  //   socket.broadcast.emit('exitguest', userArr, userData.msg);
+  // });
 })
